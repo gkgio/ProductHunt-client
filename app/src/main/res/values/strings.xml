@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProductHunt-client</string>
+    <string name="action_settings">Settings</string>
+    <string name="toast_error">Ошибка подключения к серверу. Проверьте настройки сети или повторите попытку позже.</string>
+</resources>
