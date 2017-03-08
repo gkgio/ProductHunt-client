@@ -8,13 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
 import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.di.HasComponent;
+import com.gio.producthunt_client.di.components.DaggerMainComponent;
 import com.gio.producthunt_client.di.components.MainComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
 import com.gio.producthunt_client.di.modules.MainModule;
@@ -118,8 +118,8 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     }
 
 
-
     //=======--------- MainView impelement metod END -----------=========
+
 
     // BaseActivity extended method =========
     @Override

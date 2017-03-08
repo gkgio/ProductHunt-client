@@ -5,16 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 
+import com.gio.producthunt_client.R;
+import com.gio.producthunt_client.common.enums.MessageType;
+import com.gio.producthunt_client.common.eventbus.Bus;
+import com.gio.producthunt_client.di.HasComponent;
+import com.gio.producthunt_client.network.NetworkService;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import ru.itlc.android.ubirasha.R;
-import ru.itlc.android.ubirasha.common.enums.MessageType;
-import ru.itlc.android.ubirasha.common.eventbus.Bus;
-import ru.itlc.android.ubirasha.di.HasComponent;
-import ru.itlc.android.ubirasha.network.NetworkService;
 
 public class BaseFragment extends Fragment {
 

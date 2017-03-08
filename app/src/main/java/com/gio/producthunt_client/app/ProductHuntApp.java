@@ -3,6 +3,7 @@ package com.gio.producthunt_client.app;
 import android.app.Application;
 import android.content.Context;
 
+import com.gio.producthunt_client.di.components.DaggerProductHuntAppComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
 import com.gio.producthunt_client.di.modules.ProductHuntAppModule;
 
