@@ -1,5 +1,7 @@
 package com.gio.producthunt_client.ui.main;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
@@ -20,6 +23,7 @@ import com.gio.producthunt_client.di.modules.MainModule;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import okhttp3.Cache;
 import rx.Subscription;
 
 public class MainActivity extends BaseActivity implements HasComponent<MainComponent>, MainView{
@@ -30,8 +34,15 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
 
     private Subscription eventSubscription;
 
+    private Spinner spinner;
+
+    private final int REQUEST_CODE = 1;
+
     @Inject
     MainPresenterImpl presenter;
+    @Inject
+    Cache cache;
+
     private MainComponent component;
 
     @Override
@@ -43,11 +54,23 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
         }
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        spinner = (Spinner)findViewById(R.id.toolbar_spinner);
+        //Category category = mCategoryAdapter.getItem(integer);
+       // String[] spinnerTitles = getResources().getStringArray(R.array.headerSpinnerTitles);
+        /*ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_header_spinner, spinnerTitles);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(presenter.getHeaderSpinnerCurrentPosition(preferences));
+        RxAdapterView.itemSelections(spinner)
+                .subscribe(position -> {
+                    presenter.setHeaderSpinnerCurrentPosition(preferences, position, bus, networkService, realm);
+                    invalidateOptionsMenu();
+                });*/
     }
 
     @Override
@@ -89,6 +112,13 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         if (eventSubscription != null && !eventSubscription.isUnsubscribed())
             eventSubscription.unsubscribe();
         super.onPause();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // обновляем контент в табах по возврату из любой активити
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) presenter.updateContent(preferences, bus, cachedNetworkService, cache, realm);
     }
 
     //=======--------- MainView impelement metod START ---------=========

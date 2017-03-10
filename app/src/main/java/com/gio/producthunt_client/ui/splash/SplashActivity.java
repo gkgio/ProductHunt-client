@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        presenter.onCreate();
+        presenter.onCreate(networkService, bus);
     }
 
     //=======--------- SplashView impelement metod START ---------=========
