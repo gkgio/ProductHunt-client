@@ -1,5 +1,7 @@
 package com.gio.producthunt_client.ui.splash;
 
+import com.gio.producthunt_client.common.enums.MessageType;
+
 /**
  * Created by Gigauri
  * gio
@@ -8,4 +10,5 @@ package com.gio.producthunt_client.ui.splash;
 public interface SplashView {
     void startMain();
     void finishActivity();
+    void showMessage(int message, @MessageType int type);
 }

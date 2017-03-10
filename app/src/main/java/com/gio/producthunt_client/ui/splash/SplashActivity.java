@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
+import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.di.HasComponent;
 import com.gio.producthunt_client.di.components.DaggerSplashComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
@@ -14,6 +15,8 @@ import com.gio.producthunt_client.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
+
 public class SplashActivity extends BaseActivity implements HasComponent<SplashComponent>, SplashView {
 
     @Inject
@@ -21,12 +24,29 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
 
     private SplashComponent component;
 
+    private Subscription eventSubscription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         presenter.onCreate(networkService, bus);
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        eventSubscription = presenter.subscribeToBus(bus, gson);
+    }
+
+    @Override
+    protected void onPause() {
+
+        if (eventSubscription != null && !eventSubscription.isUnsubscribed())
+            eventSubscription.unsubscribe();
+        super.onPause();
     }
 
     //=======--------- SplashView impelement metod START ---------=========
@@ -44,6 +64,11 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
         // включаем анимацию при закрытии заставки - исчезновение
         //overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
         overridePendingTransition(R.anim.fade_in_activity, R.anim.fade_out_activity);
+    }
+
+    @Override
+    public void showMessage(int message, @MessageType int type) {
+        showToast(message, type);
     }
 
     //=======--------- SplashView impelement metod END ---------=========

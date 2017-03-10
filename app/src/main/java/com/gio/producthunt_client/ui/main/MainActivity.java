@@ -1,6 +1,5 @@
 package com.gio.producthunt_client.ui.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -100,6 +99,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     @Override
     protected void onResume() {
         realm = Realm.getDefaultInstance();
+//        presenter.onCreate(networkService,bus);
         super.onResume();
         eventSubscription = presenter.subscribeToBus(bus);
     }
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // обновляем контент в табах по возврату из любой активити
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) presenter.updateContent(preferences, bus, cachedNetworkService, cache, realm);
+       // if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) presenter.updateContent(preferences, bus, cachedNetworkService, cache, realm);
     }
 
     //=======--------- MainView impelement metod START ---------=========

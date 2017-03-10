@@ -2,7 +2,6 @@ package com.gio.producthunt_client.model;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Category  extends RealmObject implements Serializable {
+public class Category implements Serializable {
     private Integer id;
 
     private String slug;
