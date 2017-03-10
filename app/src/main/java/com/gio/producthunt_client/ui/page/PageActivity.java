@@ -1,12 +1,8 @@
-package com.gio.producthunt_client.ui.main;
+package com.gio.producthunt_client.ui.page;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -14,27 +10,29 @@ import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
 import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.di.HasComponent;
-import com.gio.producthunt_client.di.components.DaggerMainComponent;
-import com.gio.producthunt_client.di.components.MainComponent;
+import com.gio.producthunt_client.di.components.DaggerPageComponent;
+import com.gio.producthunt_client.di.components.PageComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
-import com.gio.producthunt_client.di.modules.MainModule;
+import com.gio.producthunt_client.di.modules.PageModule;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity implements HasComponent<MainComponent>, MainView{
-    private Realm realm;
+/**
+ * Created by Георгий on 10.03.2017.
+ * gio.com
+ */
 
+public class PageActivity extends BaseActivity implements HasComponent<PageComponent>, PageView {
     private Toolbar toolbar;
     private ProgressBar progressBar;
 
     private Subscription eventSubscription;
 
     @Inject
-    MainPresenterImpl presenter;
-    private MainComponent component;
+    PagePresenterImpl presenter;
+    private PageComponent component;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,50 +48,18 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         }
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_main_update)
-            //presenter.updateTabContent(preferences, bus, cachedNetworkService, cache, realm);
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
-        realm = Realm.getDefaultInstance();
         super.onResume();
-        eventSubscription = presenter.subscribeToBus(bus);
+        //eventSubscription = presenter.subscribeToBus(bus);
     }
 
     @Override
     protected void onPause() {
-        if(!realm.isEmpty()) {
-            realm.close();
-        }
-        if (eventSubscription != null && !eventSubscription.isUnsubscribed())
-            eventSubscription.unsubscribe();
+      /*  if (eventSubscription != null && !eventSubscription.isUnsubscribed())
+            eventSubscription.unsubscribe();*/
         super.onPause();
     }
 
@@ -121,17 +87,16 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     // BaseActivity extended method =========
     @Override
     protected void setupComponent(ProductHuntAppComponent appComponent) {
-        component = DaggerMainComponent.builder()
+        component = DaggerPageComponent.builder()
                 .productHuntAppComponent(appComponent)
-                .mainModule(new MainModule(this))
+                .pageModule(new PageModule(this))
                 .build();
         component.inject(this);
     }
 
     // HasComponent implement method =========
     @Override
-    public MainComponent getComponent() {
+    public PageComponent getComponent() {
         return component;
     }
-
 }
