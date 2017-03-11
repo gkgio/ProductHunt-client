@@ -1,17 +1,19 @@
 package com.gio.producthunt_client.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-public class CurrentUser {
-    @SerializedName("voted_for_post")
-    @Expose
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+public class CurrentUser implements Serializable{
+
     private Boolean votedForPost;
 
-    @SerializedName("commented_on_post")
-    @Expose
     private Boolean commentedOnPost;
 }

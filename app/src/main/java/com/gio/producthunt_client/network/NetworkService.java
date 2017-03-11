@@ -1,6 +1,6 @@
 package com.gio.producthunt_client.network;
 
-import com.gio.producthunt_client.model.Category;
+import com.gio.producthunt_client.common.eventbus.events.splash.CategoriesLoadEvent;
 import com.gio.producthunt_client.model.Post;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import rx.Observable;
 public interface NetworkService {
 
     @GET("v1/categories")
-    Observable<Response<List<Category>>> getCategories(@Query("access_token") String token);
+    Observable<Response<CategoriesLoadEvent>> getCategories(@Query("access_token") String token);
 
     @GET("v1/categories/{category}/posts")
     Observable<Response<List<Post>>> getPosts(@Path("category") String category, @Query("access_token") String token);

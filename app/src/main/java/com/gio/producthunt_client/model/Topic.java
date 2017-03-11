@@ -1,21 +1,19 @@
 package com.gio.producthunt_client.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.Data;
-
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Topic {
-    @SerializedName("id")
-    @Expose
+
     private Integer id;
 
-    @SerializedName("name")
-    @Expose
     private String name;
 
-    @SerializedName("slug")
-    @Expose
     private String slug;
 }

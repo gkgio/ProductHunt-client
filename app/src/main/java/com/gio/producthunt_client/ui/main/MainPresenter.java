@@ -11,4 +11,5 @@ import rx.Subscription;
 
 public interface MainPresenter {
     Subscription subscribeToBus(Bus bus);
+    //void onCreate(NetworkService networkService, Bus bus);
 }
