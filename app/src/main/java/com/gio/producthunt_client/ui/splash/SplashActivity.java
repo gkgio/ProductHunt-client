@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        presenter.onCreate(networkService, bus);
+        presenter.onCreate(networkService, bus, preferences);
     }
 
     @Override

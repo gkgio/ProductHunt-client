@@ -5,4 +5,6 @@
     <string name="title_button_update">icon update</string>
     <string name="image_description">Image</string>
     <string name="logo_title">ProductHunt</string>
+    <string name="image">Image</string>
+    <string name="get_it">Get it</string>
 </resources>

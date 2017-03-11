@@ -19,4 +19,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyCustomToolBarTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/colorToolbarPrimaryText</item>
+        <item name="android:color">@color/colorToolbarPrimaryText</item>
+    </style>
+
+    <style name="ThemeSpinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">#ffffff</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
+        <item name="android:background">@drawable/abc_spinner_textfield_background_material</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:minHeight">38dp</item>
+    </style>
+
 </resources>

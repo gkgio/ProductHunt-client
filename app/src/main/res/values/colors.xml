@@ -6,4 +6,7 @@
     <color name="lightGray">#E5E5E5</color>
     <color name="light_yellow">#f2d856</color>
     <color name="red">#F44336</color>
+    <color name="lightBlue">#81BEF7</color>
+    <!-- Toolbar color scheme -->
+    <color name="colorToolbarPrimaryText">#E8EBE4</color>
 </resources>

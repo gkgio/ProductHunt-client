@@ -1,6 +1,7 @@
 package com.gio.producthunt_client.model;
 
-import java.io.Serializable;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +12,21 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Thumbnail implements Serializable{
+public class Thumbnail {
 
+    @SerializedName("id")
+    @Expose
     private Integer id;
 
+    @SerializedName("media_type")
+    @Expose
     private String mediaType;
 
+    @SerializedName("image_url")
+    @Expose
     private String imageUrl;
 
+    @SerializedName("metadata")
+    @Expose
     private Metadata metadata;
 }
