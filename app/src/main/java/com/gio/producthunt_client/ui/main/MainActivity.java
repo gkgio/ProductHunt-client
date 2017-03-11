@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(pageListRecyclerAdapter);
 
-        categoryAdapter = new CategoryAdapter(this);
+        categoryAdapter = new CategoryAdapter(this, categoryList);
         spinner.setAdapter(categoryAdapter);
         RxAdapterView.itemSelections(spinner)
                 .filter(integer -> categoryAdapter.getCount() != 0)
