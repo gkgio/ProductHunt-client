@@ -15,6 +15,7 @@ import com.gio.producthunt_client.common.eventbus.events.main.OpenPageEvent;
 import com.gio.producthunt_client.model.Post;
 import com.jakewharton.rxbinding.view.RxView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class PageListRecyclerAdapter extends RecyclerView.Adapter<PageListRecycl
     public PageListRecyclerAdapter(Context context, Bus bus) {
         this.context = context;
         this.bus = bus;
+        postList = new ArrayList<>();
     }
 
     @Override

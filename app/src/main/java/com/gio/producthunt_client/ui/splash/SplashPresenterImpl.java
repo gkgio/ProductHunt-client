@@ -1,5 +1,6 @@
 package com.gio.producthunt_client.ui.splash;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.gio.producthunt_client.R;
@@ -11,6 +12,7 @@ import com.gio.producthunt_client.common.eventbus.events.ThrowableEvent;
 import com.gio.producthunt_client.common.eventbus.events.splash.CategoriesLoadEvent;
 import com.gio.producthunt_client.common.rx.RxUtil;
 import com.gio.producthunt_client.model.Category;
+import com.gio.producthunt_client.model.CategoryResponse;
 import com.gio.producthunt_client.network.NetworkService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,16 +61,19 @@ public class SplashPresenterImpl implements SplashPresenter {
     }
 
     @Override
-    public void onCreate(NetworkService networkService, Bus bus) {
-        Observable<Response<CategoriesLoadEvent>> responseObservable = networkService.getCategories(Config.ACCESS_TOKEN);
+    public void onCreate(NetworkService networkService, Bus bus, SharedPreferences preferences) {
+        preferences.edit().putString(Config.apiURL, "https://www.producthunt.com/")
+                .apply();
+
+        Observable<Response<CategoryResponse>> responseObservable = networkService.getCategories(Config.ACCESS_TOKEN);
         responseObservable.compose(RxUtil.applySchedulersAndRetry())
                 .subscribe(response -> {
 
                     int responseCode = response.code();
 
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        CategoriesLoadEvent categoriesEvent = response.body();
-                        bus.send(new CategoriesLoadEvent(categoriesEvent.getCategoryList()));
+                        CategoryResponse categoryResponse = response.body();
+                        bus.send(new CategoriesLoadEvent(categoryResponse.getCategories()));
                     }
                 }, throwable -> {
                     throwable.printStackTrace();

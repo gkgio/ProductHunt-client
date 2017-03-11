@@ -1,7 +1,9 @@
 package com.gio.producthunt_client.ui.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.gio.producthunt_client.di.components.MainComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
 import com.gio.producthunt_client.di.modules.MainModule;
 import com.gio.producthunt_client.model.Category;
+import com.gio.producthunt_client.model.Post;
 import com.gio.producthunt_client.ui.page.PageActivity;
 import com.google.gson.reflect.TypeToken;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
@@ -35,7 +38,7 @@ import io.realm.Realm;
 import okhttp3.Cache;
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity implements HasComponent<MainComponent>, MainView{
+public class MainActivity extends BaseActivity implements HasComponent<MainComponent>, MainView {
     private Realm realm;
 
     private Toolbar toolbar;
@@ -72,8 +75,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        spinner = (Spinner)findViewById(R.id.toolbar_spinner);
-        RecyclerView rvPosts = (RecyclerView)findViewById(R.id.rvPosts);
+        spinner = (Spinner) findViewById(R.id.toolbar_spinner);
+
+        RecyclerView rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
 
         final List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
         }.getType());
@@ -88,7 +92,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
                 .filter(integer -> categoryAdapter.getCount() != 0)
                 .subscribe(integer -> {
                     Category category = categoryAdapter.getItem(integer);
-                   // presenter.onSpinnerItemSelected(category, getApplicationContext());
+                    presenter.onSpinnerItemSelected(category, preferences);
+                    presenter.updateTabContent(preferences, bus,
+                                     cachedNetworkService, cache);
                     invalidateOptionsMenu();
                 });
     }
@@ -110,9 +116,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         if (id == R.id.action_main_update)
             //presenter.updateTabContent(preferences, bus, cachedNetworkService, cache, realm);
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
+            if (id == R.id.action_settings) {
+                return true;
+            }
 
         return super.onOptionsItemSelected(item);
     }
@@ -120,14 +126,15 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     @Override
     protected void onResume() {
         realm = Realm.getDefaultInstance();
-//        presenter.onCreate(networkService,bus);
+       // presenter.updateTabContent(preferences, bus,
+      //          cachedNetworkService, cache);
         super.onResume();
         eventSubscription = presenter.subscribeToBus(bus);
     }
 
     @Override
     protected void onPause() {
-        if(!realm.isEmpty()) {
+        if (!realm.isEmpty()) {
             realm.close();
         }
         if (eventSubscription != null && !eventSubscription.isUnsubscribed())
@@ -136,10 +143,18 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toolbar.setTitle("");
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // обновляем контент в табах по возврату из любой активити
-       // if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) presenter.updateContent(preferences, bus, cachedNetworkService, cache, realm);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+            presenter.updateTabContent(preferences, bus,
+                    cachedNetworkService, cache);
     }
 
     //=======--------- MainView impelement metod START ---------=========
@@ -160,10 +175,16 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     }
 
     @Override
-    public void startPageActivity(int postId){
+    public void startPageActivity(int postId) {
         Intent intent = new Intent(this, PageActivity.class);
         intent.putExtra("postId", postId);
         startActivity(intent);
+    }
+
+    @Override
+    public void updatePosts(List<Post> postList) {
+        pageListRecyclerAdapter.update(postList);
+        pageListRecyclerAdapter.notifyDataSetChanged();
     }
 
     //=======--------- MainView impelement metod END -----------=========
