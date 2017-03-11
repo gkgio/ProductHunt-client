@@ -5,6 +5,7 @@ import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.common.eventbus.Bus;
 import com.gio.producthunt_client.common.eventbus.events.HttpErrorEvent;
 import com.gio.producthunt_client.common.eventbus.events.ThrowableEvent;
+import com.gio.producthunt_client.common.eventbus.events.main.OpenPageEvent;
 
 import javax.inject.Inject;
 
@@ -34,6 +35,9 @@ public class MainPresenterImpl implements MainPresenter {
                         view.showMessage(R.string.toast_error, MessageType.ERROR);
                     } else if (event instanceof HttpErrorEvent) {
                         view.showMessage(R.string.toast_error, MessageType.ERROR);
+                    } else if (event instanceof OpenPageEvent) {
+                        final int postId = ((OpenPageEvent) event).getPostId();
+                        view.startPageActivity(postId);
                     }
                 });
     }

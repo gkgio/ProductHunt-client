@@ -1,8 +1,13 @@
 package com.gio.producthunt_client.common.adapters;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.gio.producthunt_client.model.Category;
+
+import java.util.List;
 
 /**
  * Created by Георгий on 10.03.2017.
@@ -10,14 +15,22 @@ import android.widget.BaseAdapter;
  */
 
 public class CategoryAdapter extends BaseAdapter {
+    private Context context;
+    private List<Category> categoryList;
+
+    public CategoryAdapter(Context context, List<Category> categoryList) {
+        this.context = context;
+        this.categoryList = categoryList;
+    }
+
     @Override
     public int getCount() {
         return 0;
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Category getItem(int position) {
+        return categoryList.get(position);
     }
 
     @Override

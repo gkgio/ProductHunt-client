@@ -23,6 +23,7 @@ import com.gio.producthunt_client.di.components.MainComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
 import com.gio.producthunt_client.di.modules.MainModule;
 import com.gio.producthunt_client.model.Category;
+import com.gio.producthunt_client.ui.page.PageActivity;
 import com.google.gson.reflect.TypeToken;
 import com.jakewharton.rxbinding.widget.RxAdapterView;
 
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         final List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
         }.getType());
 
-        pageListRecyclerAdapter = new PageListRecyclerAdapter(this);
+        pageListRecyclerAdapter = new PageListRecyclerAdapter(this, bus);
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(pageListRecyclerAdapter);
 
@@ -87,7 +88,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
                 .filter(integer -> categoryAdapter.getCount() != 0)
                 .subscribe(integer -> {
                     Category category = categoryAdapter.getItem(integer);
-                    presenter.onSpinnerItemSelected(category, getApplicationContext());
+                   // presenter.onSpinnerItemSelected(category, getApplicationContext());
                     invalidateOptionsMenu();
                 });
     }
@@ -158,6 +159,12 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         showToast(message, type);
     }
 
+    @Override
+    public void startPageActivity(int postId){
+        Intent intent = new Intent(this, PageActivity.class);
+        intent.putExtra("postId", postId);
+        startActivity(intent);
+    }
 
     //=======--------- MainView impelement metod END -----------=========
 
