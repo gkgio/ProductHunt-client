@@ -1,5 +1,8 @@
 package com.gio.producthunt_client.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -58,5 +61,7 @@ public class Post implements Serializable{
 
     private User user;
 
+    @SerializedName("votes_count")
+    @Expose
     private Integer votesCount;
 }

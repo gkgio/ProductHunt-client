@@ -25,9 +25,10 @@
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/toolbar_spinner"
                 style="@style/ThemeSpinner"
+                app:backgroundTint="@color/red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp" />
+                android:paddingLeft="20dp" />
 
         </android.support.v7.widget.Toolbar>
 

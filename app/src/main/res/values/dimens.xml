@@ -6,4 +6,6 @@
     <dimen name="toast_radius">30dp</dimen>
     <dimen name="toast_padding_left_right">16dp</dimen>
     <dimen name="toast_padding_top_bottom">8dp</dimen>
+    <dimen name="app_bar_height">250dp</dimen>
+    <dimen name="button_radius">5dp</dimen>
 </resources>

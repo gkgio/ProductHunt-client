@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
+import com.gio.producthunt_client.common.Config;
 import com.gio.producthunt_client.common.adapters.CategoryAdapter;
 import com.gio.producthunt_client.common.adapters.PageListRecyclerAdapter;
 import com.gio.producthunt_client.common.enums.MessageType;
@@ -46,8 +49,6 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
 
     private Subscription eventSubscription;
 
-    private Spinner spinner;
-
     private final int REQUEST_CODE = 1;
 
     private PageListRecyclerAdapter pageListRecyclerAdapter;
@@ -75,9 +76,13 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        spinner = (Spinner) findViewById(R.id.toolbar_spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.toolbar_spinner);
 
         RecyclerView rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
+        rvPosts.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        rvPosts.setHasFixedSize(true);
+        rvPosts.setItemAnimator(new DefaultItemAnimator());
 
         final List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
         }.getType());
@@ -94,7 +99,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
                     Category category = categoryAdapter.getItem(integer);
                     presenter.onSpinnerItemSelected(category, preferences);
                     presenter.updateTabContent(preferences, bus,
-                                     cachedNetworkService, cache);
+                            cachedNetworkService, cache);
                     invalidateOptionsMenu();
                 });
     }
@@ -113,12 +118,14 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_main_update)
-            //presenter.updateTabContent(preferences, bus, cachedNetworkService, cache, realm);
+        if (id == R.id.action_main_update) {
+            presenter.updateTabContent(preferences, bus, cachedNetworkService, cache);
+            return true;
+        }
 
-            if (id == R.id.action_settings) {
-                return true;
-            }
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -126,10 +133,8 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     @Override
     protected void onResume() {
         realm = Realm.getDefaultInstance();
-       // presenter.updateTabContent(preferences, bus,
-      //          cachedNetworkService, cache);
         super.onResume();
-        eventSubscription = presenter.subscribeToBus(bus);
+        eventSubscription = presenter.subscribeToBus(bus, gson);
     }
 
     @Override
@@ -152,7 +157,8 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // обновляем контент в табах по возврату из любой активити
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK &&
+                !preferences.getString(Config.CATEGORY, "undefined").equals("undefined"))
             presenter.updateTabContent(preferences, bus,
                     cachedNetworkService, cache);
     }
@@ -175,9 +181,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     }
 
     @Override
-    public void startPageActivity(int postId) {
+    public void startPageActivity(Post post) {
         Intent intent = new Intent(this, PageActivity.class);
-        intent.putExtra("postId", postId);
+        intent.putExtra("Post", post);
         startActivity(intent);
     }
 

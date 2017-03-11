@@ -15,6 +15,7 @@ import com.gio.producthunt_client.model.Category;
 import com.gio.producthunt_client.model.Post;
 import com.gio.producthunt_client.model.PostResponse;
 import com.gio.producthunt_client.network.NetworkService;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -43,7 +44,7 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public Subscription subscribeToBus(Bus bus) {
+    public Subscription subscribeToBus(Bus bus, Gson gson) {
         return bus.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> {
                     view.hideProgress();
@@ -52,8 +53,8 @@ public class MainPresenterImpl implements MainPresenter {
                     } else if (event instanceof HttpErrorEvent) {
                         view.showMessage(R.string.toast_error, MessageType.ERROR);
                     } else if (event instanceof OpenPageEvent) {
-                        final int postId = ((OpenPageEvent) event).getPostId();
-                        view.startPageActivity(postId);
+                        final Post post = ((OpenPageEvent) event).getPost();
+                        view.startPageActivity(gson.toJson(((SellerEvent) event).getSeller(), Seller.class);
                     } else if (event instanceof PostLoadEvent) {
                         final List<Post> postList = ((PostLoadEvent) event).getPostList();
                         view.updatePosts(postList);

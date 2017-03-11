@@ -1,5 +1,7 @@
 package com.gio.producthunt_client.common.eventbus.events.main;
 
+import com.gio.producthunt_client.model.Post;
+
 /**
  * Created by Георгий on 11.03.2017.
  * gio.com
@@ -7,13 +9,13 @@ package com.gio.producthunt_client.common.eventbus.events.main;
 
 public class OpenPageEvent {
 
-    final private int postId;
+    final private Post post;
 
-    public OpenPageEvent(int postId) {
-        this.postId = postId;
+    public OpenPageEvent(Post post) {
+        this.post = post;
     }
 
-    public int getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 }

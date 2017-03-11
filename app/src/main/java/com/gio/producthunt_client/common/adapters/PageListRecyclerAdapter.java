@@ -61,7 +61,7 @@ public class PageListRecyclerAdapter extends RecyclerView.Adapter<PageListRecycl
 
 
         RxView.clicks(holder.itemView).subscribe(aVoid -> {
-            bus.send(new OpenPageEvent(post.getId()));
+            bus.send(new OpenPageEvent(post));
         });
     }
 
