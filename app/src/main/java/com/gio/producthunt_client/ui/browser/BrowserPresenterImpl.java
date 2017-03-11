@@ -1,4 +1,4 @@
-package com.gio.producthunt_client.ui.main;
+package com.gio.producthunt_client.ui.browser;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.common.enums.MessageType;
@@ -12,16 +12,15 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
- * Created by Георгий on 08.03.2017.
+ * Created by Георгий on 11.03.2017.
  * gio.com
  */
 
-public class MainPresenterImpl implements MainPresenter {
-
-    private MainView view;
+public class BrowserPresenterImpl implements BrowserPresenter {
+    private BrowserView view;
 
     @Inject
-    public MainPresenterImpl(MainView view) {
+    public BrowserPresenterImpl(BrowserView view) {
         this.view = view;
     }
 
@@ -37,22 +36,4 @@ public class MainPresenterImpl implements MainPresenter {
                     }
                 });
     }
-
-   /* @Override
-    public void onCreate(NetworkService networkService, Bus bus) {
-        Observable<Response<List<Category>>> responseObservable = networkService.getCategories(Config.ACCESS_TOKEN);
-        responseObservable.compose(RxUtil.applySchedulersAndRetry())
-                .subscribe(response -> {
-
-                    int responseCode = response.code();
-
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        List<Category> categoryList = response.body();
-                        bus.send(new CategoriesEvent(categoryList));
-                    }
-                }, throwable -> {
-                    throwable.printStackTrace();
-                    bus.send(new ThrowableEvent(throwable));
-                });
-    }*/
 }

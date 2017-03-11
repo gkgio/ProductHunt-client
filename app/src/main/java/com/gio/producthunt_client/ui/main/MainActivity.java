@@ -3,6 +3,8 @@ package com.gio.producthunt_client.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +14,19 @@ import android.widget.Spinner;
 
 import com.gio.producthunt_client.R;
 import com.gio.producthunt_client.app.BaseActivity;
+import com.gio.producthunt_client.common.adapters.CategoryAdapter;
+import com.gio.producthunt_client.common.adapters.PageListRecyclerAdapter;
 import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.di.HasComponent;
 import com.gio.producthunt_client.di.components.DaggerMainComponent;
 import com.gio.producthunt_client.di.components.MainComponent;
 import com.gio.producthunt_client.di.components.ProductHuntAppComponent;
 import com.gio.producthunt_client.di.modules.MainModule;
+import com.gio.producthunt_client.model.Category;
+import com.google.gson.reflect.TypeToken;
+import com.jakewharton.rxbinding.widget.RxAdapterView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,6 +45,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     private Spinner spinner;
 
     private final int REQUEST_CODE = 1;
+
+    private PageListRecyclerAdapter pageListRecyclerAdapter;
+    private CategoryAdapter categoryAdapter;
 
     @Inject
     MainPresenterImpl presenter;
@@ -60,16 +72,24 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         spinner = (Spinner)findViewById(R.id.toolbar_spinner);
-        //Category category = mCategoryAdapter.getItem(integer);
-       // String[] spinnerTitles = getResources().getStringArray(R.array.headerSpinnerTitles);
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_header_spinner, spinnerTitles);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(presenter.getHeaderSpinnerCurrentPosition(preferences));
+        RecyclerView rvPosts = (RecyclerView)findViewById(R.id.rvPosts);
+
+        final List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
+        }.getType());
+
+        pageListRecyclerAdapter = new PageListRecyclerAdapter(this);
+        rvPosts.setLayoutManager(new LinearLayoutManager(this));
+        rvPosts.setAdapter(pageListRecyclerAdapter);
+
+        categoryAdapter = new CategoryAdapter(this);
+        spinner.setAdapter(categoryAdapter);
         RxAdapterView.itemSelections(spinner)
-                .subscribe(position -> {
-                    presenter.setHeaderSpinnerCurrentPosition(preferences, position, bus, networkService, realm);
+                .filter(integer -> categoryAdapter.getCount() != 0)
+                .subscribe(integer -> {
+                    Category category = categoryAdapter.getItem(integer);
+                    presenter.onSpinnerItemSelected(category, getApplicationContext());
                     invalidateOptionsMenu();
-                });*/
+                });
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.gio.producthunt_client.common.enums.MessageType;
 import com.gio.producthunt_client.common.eventbus.Bus;
 import com.gio.producthunt_client.common.eventbus.events.HttpErrorEvent;
 import com.gio.producthunt_client.common.eventbus.events.ThrowableEvent;
-import com.gio.producthunt_client.common.eventbus.events.splash.CategoriesEvent;
+import com.gio.producthunt_client.common.eventbus.events.splash.CategoriesLoadEvent;
 import com.gio.producthunt_client.common.rx.RxUtil;
 import com.gio.producthunt_client.model.Category;
 import com.gio.producthunt_client.network.NetworkService;
@@ -45,11 +45,11 @@ public class SplashPresenterImpl implements SplashPresenter {
     public Subscription subscribeToBus(Bus bus, Gson gson) {
         return bus.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> {
-                    if (event instanceof CategoriesEvent) {
+                    if (event instanceof CategoriesLoadEvent) {
                         Type categoriesListType = new TypeToken<List<Category>>() {
                         }.getType();
-                        List<Category> categoryList = ((CategoriesEvent) event).getCategoryList();
-
+                        List<Category> categoryList = ((CategoriesLoadEvent) event).getCategoryList();
+                        startMainWithDelay(gson.toJson(categoryList, categoriesListType));
                     } else if (event instanceof ThrowableEvent) {
                         view.showMessage(R.string.toast_error, MessageType.ERROR);
                     } else if (event instanceof HttpErrorEvent) {
@@ -60,43 +60,29 @@ public class SplashPresenterImpl implements SplashPresenter {
 
     @Override
     public void onCreate(NetworkService networkService, Bus bus) {
-        Observable<Response<CategoriesEvent>> responseObservable = networkService.getCategories(Config.ACCESS_TOKEN);
+        Observable<Response<CategoriesLoadEvent>> responseObservable = networkService.getCategories(Config.ACCESS_TOKEN);
         responseObservable.compose(RxUtil.applySchedulersAndRetry())
                 .subscribe(response -> {
 
                     int responseCode = response.code();
 
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        CategoriesEvent categoriesEvent = response.body();
-                        bus.send(new CategoriesEvent(categoriesEvent.getCategoryList()));
+                        CategoriesLoadEvent categoriesEvent = response.body();
+                        bus.send(new CategoriesLoadEvent(categoriesEvent.getCategoryList()));
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
                     bus.send(new ThrowableEvent(throwable));
                 });
+    }
 
-
-
-     /*   Observable<List<Category>> responseObservableReserved = networkService.getCategories(Config.ACCESS_TOKEN).compose(RxUtil.applySchedulersAndRetry());
-        Observable<List<Post>> responseObservableSupply = networkService.getPosts(Config.ACCESS_TOKEN).compose(RxUtil.applySchedulersAndRetry());
-
-        Observable.zip(responseObservableReserved, responseObservableSupply, ReservedAndSupplyLoadedEvent::new)
-                .subscribe(bus::send, throwable -> {
-                    throwable.printStackTrace();
-                    bus.send(new ThrowableEvent(throwable));
-                });
-*/
+    private void startMainWithDelay(String jsonCategories) {
         // запускаем соответствующую активити после задержки
-
         new Handler().postDelayed(() -> {
             {
-                view.startMain();
+                view.startMain(jsonCategories);
             }
             view.finishActivity();
         }, Config.SHOW_SPLASH_DELAY_MILLIS);
-    }
-
-    private void startMainWithDelay(){
-
     }
 }

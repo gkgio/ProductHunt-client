@@ -9,10 +9,10 @@ import java.util.List;
  * gio.com
  */
 
-public class CategoriesEvent {
+public class CategoriesLoadEvent {
     private final List<Category> categoryList;
 
-    public CategoriesEvent(List<Category> categoryList) {
+    public CategoriesLoadEvent(List<Category> categoryList) {
         this.categoryList = categoryList;
     }
 

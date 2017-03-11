@@ -36,14 +36,12 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
 
     @Override
     protected void onResume() {
-
         super.onResume();
         eventSubscription = presenter.subscribeToBus(bus, gson);
     }
 
     @Override
     protected void onPause() {
-
         if (eventSubscription != null && !eventSubscription.isUnsubscribed())
             eventSubscription.unsubscribe();
         super.onPause();
@@ -53,8 +51,9 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
 
 
     @Override
-    public void startMain() {
+    public void startMain(String jsonCategories) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Categories", jsonCategories);
         startActivity(intent);
     }
 

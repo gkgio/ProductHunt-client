@@ -8,7 +8,7 @@ import com.gio.producthunt_client.common.enums.MessageType;
  */
 
 public interface SplashView {
-    void startMain();
+    void startMain(String jsonCategories);
     void finishActivity();
     void showMessage(int message, @MessageType int type);
 }

@@ -1,16 +1,19 @@
 package com.gio.producthunt_client.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
-public class ScreenshotUrl {
-    @SerializedName("300px")
-    @Expose
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+public class ScreenshotUrl implements Serializable{
+
     private String _300px;
-    @SerializedName("850px")
-    @Expose
+
     private String _850px;
 }
