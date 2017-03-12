@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.gio.producthunt_client.R;
@@ -36,10 +37,15 @@ public class BrowserActivity extends BaseActivity implements HasComponent<Browse
 
     private BrowserComponent component;
 
+    private String url;
+    private String postId;
+
+    private WebView wbPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_browser);
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,11 +56,16 @@ public class BrowserActivity extends BaseActivity implements HasComponent<Browse
         }
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        wbPage = (WebView) findViewById(R.id.wvPage);
+        url = getIntent().getStringExtra("url");
+        postId = getIntent().getStringExtra("postId");
+
 
     }
 
     @Override
     protected void onResume() {
+        presenter.loadPage(url, postId);
         super.onResume();
         eventSubscription = presenter.subscribeToBus(bus);
     }
@@ -81,6 +92,11 @@ public class BrowserActivity extends BaseActivity implements HasComponent<Browse
     @Override
     public void showMessage(int message, @MessageType int type) {
         showToast(message, type);
+    }
+
+    @Override
+    public void loadBrowserPage(String path) {
+        wbPage.loadUrl(path);
     }
 
 

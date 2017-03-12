@@ -11,4 +11,5 @@ import rx.Subscription;
 
 public interface BrowserPresenter {
     Subscription subscribeToBus(Bus bus);
+    void loadPage(String url, String postId);
 }

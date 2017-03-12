@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,8 +25,6 @@ import com.jakewharton.rxbinding.view.RxView;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-
 /**
  * Created by Георгий on 10.03.2017.
  * gio.com
@@ -36,9 +32,6 @@ import rx.Subscription;
 
 public class PageActivity extends BaseActivity implements HasComponent<PageComponent>, PageView {
     private Toolbar toolbar;
-    private ProgressBar progressBar;
-
-    private Subscription eventSubscription;
 
     @Inject
     PagePresenterImpl presenter;
@@ -47,25 +40,23 @@ public class PageActivity extends BaseActivity implements HasComponent<PageCompo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_page);
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
         }
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        final Post post = gson.fromJson(getIntent().getStringExtra("PostObject"), Post.class);
 
-        Post post = gson.fromJson(getIntent().getStringExtra("Post"), Post.class);
-
-        Button btnOpenWeb = (Button)findViewById(R.id.btnOpenWeb);
-        TextView tvPostTitle = (TextView)findViewById(R.id.tvPostTitle);
-        TextView tvPostDescription = (TextView)findViewById((R.id.tvPostDescription));
-        TextView tvPostVotes = (TextView)findViewById(R.id.tvPostVotes);
-        ImageView ivPost = (ImageView)findViewById(R.id.ivPost);
+        Button btnOpenWeb = (Button) findViewById(R.id.btnOpenWeb);
+        TextView tvPostTitle = (TextView) findViewById(R.id.tvTitlePost);
+        TextView tvPostDescription = (TextView) findViewById(R.id.tvDescPost);
+        TextView tvPostVotes = (TextView) findViewById(R.id.tvVotes);
+        ImageView ivPost = (ImageView) findViewById(R.id.ivBarPost);
 
         tvPostTitle.setText(post.getName());
         tvPostDescription.setText(post.getTagline());
@@ -88,13 +79,10 @@ public class PageActivity extends BaseActivity implements HasComponent<PageCompo
     @Override
     protected void onResume() {
         super.onResume();
-        //eventSubscription = presenter.subscribeToBus(bus);
     }
 
     @Override
     protected void onPause() {
-      /*  if (eventSubscription != null && !eventSubscription.isUnsubscribed())
-            eventSubscription.unsubscribe();*/
         super.onPause();
     }
 
@@ -104,24 +92,15 @@ public class PageActivity extends BaseActivity implements HasComponent<PageCompo
         toolbar.setTitle("");
     }
 
-    private void startBrowserActivity(String postId){
+    private void startBrowserActivity(String postId) {
         Intent intent = new Intent(this, BrowserActivity.class);
-        intent.putExtra("postId",postId);
+        intent.putExtra("postId", postId);
         intent.putExtra("url", Config.apiPostsURL);
         startActivity(intent);
     }
 
     //=======--------- MainView impelement metod START ---------=========
 
-    @Override
-    public void hideProgress() {
-        progressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void showMessage(int message, @MessageType int type) {

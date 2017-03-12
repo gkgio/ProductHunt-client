@@ -24,10 +24,9 @@
 
         <activity android:name=".ui.main.MainActivity" />
 
-        <activity
-            android:name=".ui.page.PageActivity"
-            android:theme="@style/noWindowTranslucent"
-            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.page.PageActivity" />
+
+        <activity android:name=".ui.browser.BrowserActivity" />
     </application>
 
 </manifest>

@@ -36,4 +36,9 @@ public class BrowserPresenterImpl implements BrowserPresenter {
                     }
                 });
     }
+
+    @Override
+    public void loadPage(String url, String postId){
+        view.loadBrowserPage(url + postId);
+    }
 }

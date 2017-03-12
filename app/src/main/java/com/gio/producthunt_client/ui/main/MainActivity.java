@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
         rvPosts.setHasFixedSize(true);
         rvPosts.setItemAnimator(new DefaultItemAnimator());
 
-        final List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
+        List<Category> categoryList = gson.fromJson(getIntent().getStringExtra("Categories"), new TypeToken<List<Category>>() {
         }.getType());
 
         pageListRecyclerAdapter = new PageListRecyclerAdapter(this, bus);
@@ -181,9 +181,9 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     }
 
     @Override
-    public void startPageActivity(Post post) {
+    public void startPageActivity(String jsonPost) {
         Intent intent = new Intent(this, PageActivity.class);
-        intent.putExtra("Post", post);
+        intent.putExtra("PostObject", jsonPost);
         startActivity(intent);
     }
 

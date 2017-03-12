@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscription;
@@ -61,7 +62,7 @@ public class SplashPresenterImpl implements SplashPresenter {
     }
 
     @Override
-    public void onCreate(NetworkService networkService, Bus bus, SharedPreferences preferences) {
+    public void onCreate(NetworkService networkService, Bus bus, SharedPreferences preferences, Realm realm) {
         preferences.edit().putString(Config.apiURL, "https://www.producthunt.com/")
                 .apply();
 
@@ -73,6 +74,7 @@ public class SplashPresenterImpl implements SplashPresenter {
 
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         CategoryResponse categoryResponse = response.body();
+                        realm.executeTransaction(transaction -> transaction.copyToRealmOrUpdate(categoryResponse));
                         bus.send(new CategoriesLoadEvent(categoryResponse.getCategories()));
                     }
                 }, throwable -> {

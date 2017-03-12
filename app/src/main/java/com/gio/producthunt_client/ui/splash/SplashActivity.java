@@ -15,6 +15,7 @@ import com.gio.producthunt_client.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
 import rx.Subscription;
 
 public class SplashActivity extends BaseActivity implements HasComponent<SplashComponent>, SplashView {
@@ -25,25 +26,29 @@ public class SplashActivity extends BaseActivity implements HasComponent<SplashC
     private SplashComponent component;
 
     private Subscription eventSubscription;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        presenter.onCreate(networkService, bus, preferences);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         eventSubscription = presenter.subscribeToBus(bus, gson);
+        realm = Realm.getDefaultInstance();
+        presenter.onCreate(networkService, bus, preferences, realm);
     }
 
     @Override
     protected void onPause() {
         if (eventSubscription != null && !eventSubscription.isUnsubscribed())
             eventSubscription.unsubscribe();
+        if(!realm.isEmpty()){
+            realm.close();
+        }
         super.onPause();
     }
 
