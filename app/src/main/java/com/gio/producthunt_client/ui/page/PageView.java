@@ -8,7 +8,5 @@ import com.gio.producthunt_client.common.enums.MessageType;
  */
 
 public interface PageView {
-    void showProgress();
-    void hideProgress();
     void showMessage(int message, @MessageType int type);
 }

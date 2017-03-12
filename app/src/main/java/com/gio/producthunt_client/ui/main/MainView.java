@@ -14,6 +14,6 @@ public interface MainView {
     void showProgress();
     void hideProgress();
     void showMessage(int message, @MessageType int type);
-    void startPageActivity(Post post);
+    void startPageActivity(String jsonPost);
     void updatePosts(List<Post> postList);
 }

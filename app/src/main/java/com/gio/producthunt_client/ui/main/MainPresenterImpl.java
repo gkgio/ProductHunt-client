@@ -12,6 +12,7 @@ import com.gio.producthunt_client.common.eventbus.events.main.OpenPageEvent;
 import com.gio.producthunt_client.common.eventbus.events.main.PostLoadEvent;
 import com.gio.producthunt_client.common.rx.RxUtil;
 import com.gio.producthunt_client.model.Category;
+import com.gio.producthunt_client.model.CategoryResponse;
 import com.gio.producthunt_client.model.Post;
 import com.gio.producthunt_client.model.PostResponse;
 import com.gio.producthunt_client.network.NetworkService;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
 import okhttp3.Cache;
 import retrofit2.Response;
 import rx.Observable;
@@ -53,8 +55,8 @@ public class MainPresenterImpl implements MainPresenter {
                     } else if (event instanceof HttpErrorEvent) {
                         view.showMessage(R.string.toast_error, MessageType.ERROR);
                     } else if (event instanceof OpenPageEvent) {
-                        final Post post = ((OpenPageEvent) event).getPost();
-                        view.startPageActivity(gson.toJson(((SellerEvent) event).getSeller(), Seller.class);
+                        Post post = ((OpenPageEvent) event).getPost();
+                        view.startPageActivity(gson.toJson(((OpenPageEvent) event).getPost(), Post.class));
                     } else if (event instanceof PostLoadEvent) {
                         final List<Post> postList = ((PostLoadEvent) event).getPostList();
                         view.updatePosts(postList);
@@ -101,4 +103,5 @@ public class MainPresenterImpl implements MainPresenter {
         preferences.edit().putString(Config.CATEGORY, category.getName().toLowerCase())
                 .apply();
     }
+
 }
