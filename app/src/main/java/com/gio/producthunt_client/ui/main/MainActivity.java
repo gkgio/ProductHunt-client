@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity implements HasComponent<MainCompo
     private CategoryAdapter categoryAdapter;
 
     @Inject
-    MainPresenterImpl presenter;
+    MainPresenter presenter;
     @Inject
     Cache cache;
 

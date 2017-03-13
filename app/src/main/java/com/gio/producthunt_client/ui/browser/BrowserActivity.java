@@ -33,7 +33,7 @@ public class BrowserActivity extends BaseActivity implements HasComponent<Browse
     private Subscription eventSubscription;
 
     @Inject
-    BrowserPresenterImpl presenter;
+    BrowserPresenter presenter;
 
     private BrowserComponent component;
 

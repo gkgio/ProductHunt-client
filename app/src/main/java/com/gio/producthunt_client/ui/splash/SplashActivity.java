@@ -21,7 +21,7 @@ import rx.Subscription;
 public class SplashActivity extends BaseActivity implements HasComponent<SplashComponent>, SplashView {
 
     @Inject
-    public SplashPresenterImpl presenter;
+    public SplashPresenter presenter;
 
     private SplashComponent component;
 

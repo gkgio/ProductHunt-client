@@ -34,7 +34,7 @@ public class PageActivity extends BaseActivity implements HasComponent<PageCompo
     private Toolbar toolbar;
 
     @Inject
-    PagePresenterImpl presenter;
+    PagePresenter presenter;
     private PageComponent component;
 
     @Override
