@@ -8,8 +8,8 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Created by Alexey Mitutov on 27.12.2016.
- * ИТЛ Консалтинг
+ * Created by GIo on 27.12.2016.
+ * gkgio
  */
 public class RetryWithDelay implements Func1<Observable<? extends Throwable>, Observable<?>> {
 

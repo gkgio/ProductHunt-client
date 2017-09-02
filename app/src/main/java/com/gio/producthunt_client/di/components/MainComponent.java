@@ -7,8 +7,8 @@ import com.gio.producthunt_client.ui.main.MainActivity;
 import dagger.Component;
 
 /**
- * Created by Alexey Mitutov on 20.12.2016.
- * ИТЛ Консалтинг
+ * Created by gio on 20.12.2016.
+ * Gkgio
  */
 
 @ActivityScope

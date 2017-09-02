@@ -6,8 +6,8 @@ import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 
 /**
- * Created by Alexey Mitutov on 05.12.2016.
- * ИТЛ Консалтинг
+ * Created by gio on 05.12.2016.
+ * Gio
  */
 
 public class Bus extends SerializedSubject<Object, Object> {

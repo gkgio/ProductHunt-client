@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by Alexey Mitutov on 20.01.2017.
- * ИТЛ Консалтинг
+ * Created by gio on 20.01.2017.
+ * GIo
  * Тип сообщения
  */
 

@@ -18,8 +18,8 @@ import javax.inject.Named;
 
 
 /**
- * Created by Alexey Mitutov on 05.12.2016.
- * ИТЛ Консалтинг
+ * Created by Gio
+ * GKGIO
  */
 
 public abstract class BaseActivity extends AppCompatActivity {

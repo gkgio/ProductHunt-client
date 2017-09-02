@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * Created by g.gigauri on 20.01.2017.
- * ИТЛ Консалтинг
+ * gio
  */
 
 public class LongWrapper extends RealmObject {
